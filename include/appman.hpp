@@ -8,10 +8,10 @@ using namespace std;
 struct App{
     unsigned int id;
     unsigned int category;
-    char* name;
-    char* icon_path;
-    char* executable_path;
-    char* startup_parameters;
+    const char* name;
+    const char* icon_path;
+    const char* executable_path;
+    const char* startup_parameters;
 };
 
 class ApplicationManager{
@@ -33,7 +33,5 @@ public:
     void listApps();
     int popApp(unsigned int id);
 };
-
-
 
 #endif

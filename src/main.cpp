@@ -14,6 +14,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #include <malloc.h>
+#include <appman.hpp>
 #define BUFFER_SIZE 2048
 
 void loadModules(void){
@@ -111,6 +112,14 @@ int main(int argc, char *argv[]){
 
     printf("\nSDL VERSIYASI: %d.%d\n", SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
 
+    ApplicationManager &Appman = ApplicationManager::get_instance();
+    App app = {
+        1, // ID
+        1, // CAT
+        "APP NAME", // NAME
+        "./", "./", ""
+    };
+    Appman.pushApp(&app);
 
     // ------------------------- MUSIC ----------------------- //
     /* initialize SDL_mixer */
@@ -130,7 +139,7 @@ int main(int argc, char *argv[]){
     if(!music){
         printf("music NULL QAYTARDI!\n");
     }
-
+    
     Mix_PlayMusic(music, 0);
     SDL_SetThreadPriority(SDL_THREAD_PRIORITY_LOW);
     unsigned int sonuncu_duyme = 0;
@@ -154,6 +163,7 @@ int main(int argc, char *argv[]){
         if((new_pad ^ sonuncu_duyme) & PAD_DOWN){
             printf("ASAGI\n");
             if(qirmizi > 0) qirmizi--;
+            Appman.listApps();
         }
         sonuncu_duyme = new_pad;
         
@@ -172,7 +182,7 @@ int main(int argc, char *argv[]){
         size_t ret = strftime(s, sizeof(s), "%c", tm);
         assert(ret);
 
-        SDL_Color Yazicolor = {qirmizi, 0, goy, 255};
+        SDL_Color Yazicolor = {(Uint8)qirmizi, 0, (Uint8)goy, 255};
         SDL_Surface* temp = TTF_RenderUTF8_Blended(font, s, Yazicolor);
         SDL_Texture* timeImage = SDL_CreateTextureFromSurface(renderer, temp);
         SDL_Rect posTime = {10, 10, 150, 50};

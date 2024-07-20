@@ -34,6 +34,7 @@
         "loadfile.h": "c",
         "iopcontrol.h": "c",
         "audsrv.h": "c",
-        "map": "cpp"
+        "map": "cpp",
+        "appman.hpp": "c"
     }
 }
