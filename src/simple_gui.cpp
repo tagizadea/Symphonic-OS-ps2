@@ -43,4 +43,6 @@ void Button::render(SDL_Rect &rect){
     SDL_Surface* temp = TTF_RenderUTF8_Blended(Simple::font, text.c_str(), textColor);
     SDL_Texture* textImage = SDL_CreateTextureFromSurface(Simple::renderer, temp);
     SDL_RenderCopy(Simple::renderer, textImage, NULL, &rect);
+    SDL_FreeSurface(temp);
+    SDL_DestroyTexture(textImage);
 }

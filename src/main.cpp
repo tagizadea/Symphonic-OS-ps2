@@ -123,7 +123,7 @@ int main(int argc, char *argv[]){
     Button button;
     button.setTag("Ilk Button");
     button.setText("ILK BUTTON YAZISI!");
-    SDL_Rect button_rect = {200, 20, 50, 400};
+    SDL_Rect button_rect = {50, 200, 300, 200};
 
     // ------------------------- MUSIC ----------------------- //
     /* initialize SDL_mixer */
