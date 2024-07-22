@@ -82,8 +82,6 @@ int main(int argc, char *argv[]){
     all_inits();
     init_GS();
     SDL_Window* window = NULL;
-    //SDL_Renderer* renderer = NULL;
-    //SDL_CreateWindowAndRenderer(1280, 720, 0, &window, &renderer);
     window = SDL_CreateWindow("PS2 SDL2 WINDOW",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
@@ -95,17 +93,19 @@ int main(int argc, char *argv[]){
     
     Simple::font = TTF_OpenFont("FONT.OTF", 100);
     if(Simple::font == NULL) printf("Font load olmadi!\n");
+    
     SDL_Color color = {255, 0, 0, 255};
     SDL_Surface* temp = TTF_RenderUTF8_Blended(Simple::font, "Azərbaycan!", color);
     SDL_Texture* textImage = SDL_CreateTextureFromSurface(Simple::renderer, temp);
-    SDL_Rect pos = {320 - 100 + 20, 240 - 50, 240, 100};
+    SDL_Rect pos = {200, 190, 240, 100};
     SDL_FreeSurface(temp);
+
 
     SDL_Rect rect;
     rect.h = 100;
     rect.w = 400;
     rect.x = 100;
-    rect.y = 240 - 50;
+    rect.y = 190;
 
     int qirmizi = 120, goy = 120;
 
@@ -123,7 +123,8 @@ int main(int argc, char *argv[]){
     Button button;
     button.setTag("Ilk Button");
     button.setText("ILK BUTTON YAZISI!");
-    SDL_Rect button_rect = {50, 200, 300, 200};
+    button.setRect(30, 300, 150, 100);
+    button.setColor({0, 128, 255, 255});
 
     // ------------------------- MUSIC ----------------------- //
     /* initialize SDL_mixer */
@@ -192,7 +193,7 @@ int main(int argc, char *argv[]){
         SDL_Rect posTime = {10, 10, 150, 50};
         SDL_RenderCopy(Simple::renderer, textImage, NULL, &pos);
         SDL_RenderCopy(Simple::renderer, timeImage, NULL, &posTime);
-        button.render(button_rect);
+        button.render();
         SDL_RenderPresent(Simple::renderer);
 
         SDL_FreeSurface(temp); // Free the surface

@@ -28,18 +28,23 @@ class Button : public Simple_GUI{
     SDL_Color textColor;
     string text;
     SDL_Color color;
-
+    SDL_Rect rect;
+    SDL_Rect mrect;
     bool checkHover(SDL_Rect &rect);
 
     public:
 
-    Button();
-    Button(SDL_Color &textColor, SDL_Color &Color);
+    bool is_pressable;
 
+    Button();
+    Button(SDL_Color &textColor, SDL_Color &Color, bool Press);
+
+    void setRect(int x, int y, int w, int h);
+    void setRect(SDL_Rect &rect);
     void setText(string text);
-    void setColor(SDL_Color &color);
-    void setTextColor(SDL_Color &color);
-    void render(SDL_Rect &rect);
+    void setColor(SDL_Color color);
+    void setTextColor(SDL_Color color);
+    void render();
 };
 
 #endif
