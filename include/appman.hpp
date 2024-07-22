@@ -1,5 +1,5 @@
-#ifndef OWN_APP_MAN
-#define OWN_APP_MAN
+#ifndef APP_MAN
+#define APP_MAN
 
 #include <map>
 #include <memory>

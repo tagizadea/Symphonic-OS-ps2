@@ -1,5 +1,5 @@
 EE_BIN = ./bin/output.elf
-EE_OBJS = ./src/main.o ./src/pad.o ./src/appman.o
+EE_OBJS = ./src/main.o ./src/pad.o ./src/appman.o ./src/simple_gui.o
 EE_LIBS = -L/usr/local/ps2dev/ps2sdk/ports/lib -L/usr/local/ps2dev/gsKit/lib -L/usr/local/ps2dev/ps2sdk/ee/lib
 EE_LIBS += -lc -lm
 EE_LIBS += -ldebug -lkernel -lgskit -ldmakit -lcdvd

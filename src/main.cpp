@@ -10,11 +10,10 @@
 #include <dmaKit.h>
 #include <pad.h>
 #include <audsrv.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #include <malloc.h>
 #include <appman.hpp>
+#include <simple_gui.hpp>
 #define BUFFER_SIZE 2048
 
 void loadModules(void){
@@ -83,22 +82,22 @@ int main(int argc, char *argv[]){
     all_inits();
     init_GS();
     SDL_Window* window = NULL;
-    SDL_Renderer* renderer = NULL;
+    //SDL_Renderer* renderer = NULL;
     //SDL_CreateWindowAndRenderer(1280, 720, 0, &window, &renderer);
     window = SDL_CreateWindow("PS2 SDL2 WINDOW",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
                                           640, 480,
                                           SDL_WINDOW_SHOWN);
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | 
+    Simple::renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | 
                                         SDL_RENDERER_TARGETTEXTURE);
 
     
-    TTF_Font* font = TTF_OpenFont("FONT.OTF", 100);
-    if(font == NULL) printf("Font load olmadi!\n");
+    Simple::font = TTF_OpenFont("FONT.OTF", 100);
+    if(Simple::font == NULL) printf("Font load olmadi!\n");
     SDL_Color color = {255, 0, 0, 255};
-    SDL_Surface* temp = TTF_RenderUTF8_Blended(font, "Azərbaycan!", color);
-    SDL_Texture* textImage = SDL_CreateTextureFromSurface(renderer, temp);
+    SDL_Surface* temp = TTF_RenderUTF8_Blended(Simple::font, "Azərbaycan!", color);
+    SDL_Texture* textImage = SDL_CreateTextureFromSurface(Simple::renderer, temp);
     SDL_Rect pos = {320 - 100 + 20, 240 - 50, 240, 100};
     SDL_FreeSurface(temp);
 
@@ -120,6 +119,11 @@ int main(int argc, char *argv[]){
         "./", "./", ""
     };
     Appman.pushApp(&app);
+
+    Button button;
+    button.setTag("Ilk Button");
+    button.setText("ILK BUTTON YAZISI!");
+    SDL_Rect button_rect = {200, 20, 50, 400};
 
     // ------------------------- MUSIC ----------------------- //
     /* initialize SDL_mixer */
@@ -169,12 +173,12 @@ int main(int argc, char *argv[]){
         
         // ------------------------- RENDER ----------------------- //
 
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(Simple::renderer, 255, 255, 255, 255);
+        SDL_RenderClear(Simple::renderer);
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        SDL_RenderDrawRect(renderer, &rect);
-        SDL_RenderFillRect(renderer, &rect);
+        SDL_SetRenderDrawColor(Simple::renderer, 0, 0, 255, 255);
+        SDL_RenderDrawRect(Simple::renderer, &rect);
+        SDL_RenderFillRect(Simple::renderer, &rect);
 
         time_t t = time(NULL);
         struct tm *tm = localtime(&t);
@@ -183,13 +187,13 @@ int main(int argc, char *argv[]){
         assert(ret);
 
         SDL_Color Yazicolor = {(Uint8)qirmizi, 0, (Uint8)goy, 255};
-        SDL_Surface* temp = TTF_RenderUTF8_Blended(font, s, Yazicolor);
-        SDL_Texture* timeImage = SDL_CreateTextureFromSurface(renderer, temp);
+        SDL_Surface* temp = TTF_RenderUTF8_Blended(Simple::font, s, Yazicolor);
+        SDL_Texture* timeImage = SDL_CreateTextureFromSurface(Simple::renderer, temp);
         SDL_Rect posTime = {10, 10, 150, 50};
-        SDL_RenderCopy(renderer, textImage, NULL, &pos);
-        SDL_RenderCopy(renderer, timeImage, NULL, &posTime);
-
-        SDL_RenderPresent(renderer);
+        SDL_RenderCopy(Simple::renderer, textImage, NULL, &pos);
+        SDL_RenderCopy(Simple::renderer, timeImage, NULL, &posTime);
+        button.render(button_rect);
+        SDL_RenderPresent(Simple::renderer);
 
         SDL_FreeSurface(temp); // Free the surface
         SDL_DestroyTexture(timeImage); // Destroy the texture
@@ -199,7 +203,7 @@ int main(int argc, char *argv[]){
 
     // Clean up and quit SDL
     Mix_FreeMusic(music);
-    SDL_DestroyRenderer(renderer);
+    SDL_DestroyRenderer(Simple::renderer);
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(textImage);
     TTF_Quit();
