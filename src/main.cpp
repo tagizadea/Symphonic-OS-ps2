@@ -124,7 +124,10 @@ int main(int argc, char *argv[]){
     button.setTag("Ilk Button");
     button.setText("ILK BUTTON YAZISI!");
     button.setRect(30, 300, 150, 100);
-    button.setColor({0, 128, 255, 255});
+    button.setColor({21, 128, 255, 255});
+
+    Button timeLayer;
+    timeLayer.setRect(5, 5, 100, 20);
 
     // ------------------------- MUSIC ----------------------- //
     /* initialize SDL_mixer */
@@ -156,6 +159,7 @@ int main(int argc, char *argv[]){
         if((new_pad ^ sonuncu_duyme) & PAD_UP){
             printf("YUXARI\n");
             if(qirmizi < 255) qirmizi++;
+            button.is_hovering = true;
         }
         if((new_pad ^ sonuncu_duyme) & PAD_LEFT){
             printf("SOL\n");
@@ -187,19 +191,16 @@ int main(int argc, char *argv[]){
         size_t ret = strftime(s, sizeof(s), "%c", tm);
         assert(ret);
 
-        SDL_Color Yazicolor = {(Uint8)qirmizi, 0, (Uint8)goy, 255};
-        SDL_Surface* temp = TTF_RenderUTF8_Blended(Simple::font, s, Yazicolor);
-        SDL_Texture* timeImage = SDL_CreateTextureFromSurface(Simple::renderer, temp);
-        SDL_Rect posTime = {10, 10, 150, 50};
-        SDL_RenderCopy(Simple::renderer, textImage, NULL, &pos);
-        SDL_RenderCopy(Simple::renderer, timeImage, NULL, &posTime);
+        timeLayer.setText(s);
+        timeLayer.setTextColor({(Uint8)qirmizi, 0, (Uint8)goy, 255});
+        timeLayer.render();
         button.render();
+        SDL_RenderCopy(Simple::renderer, textImage, NULL, &pos);
+
         SDL_RenderPresent(Simple::renderer);
-
-        SDL_FreeSurface(temp); // Free the surface
-        SDL_DestroyTexture(timeImage); // Destroy the texture
-
         SDL_Delay(16);
+        button.clear();
+        timeLayer.clear();
     }
 
     // Clean up and quit SDL

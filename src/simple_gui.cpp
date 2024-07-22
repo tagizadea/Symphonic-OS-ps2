@@ -13,18 +13,33 @@ void Simple_GUI::setTag(string tag){
     this->tag = tag;
 }
 
+SDL_Color Button::hover(){
+    SDL_Color temp = color;
+    if(color.b > 20 && color.g > 20 && color.r > 20){
+        temp.b -= 15;
+        temp.r -= 15;
+        temp.g -= 15;
+    }
+    else{
+        temp.b += 15;
+        temp.r += 15;
+        temp.g += 15;
+    }
+    return temp;
+}
+
 Button::Button(){
-    is_pressable = true;
+    is_hovering = false;
     text = "";
     textColor = {0, 0, 0, 255};
     color = {255, 255, 255, 255};
     rect = {0, 0, 100, 50};
 }
 
-Button::Button(SDL_Color &textColor, SDL_Color &Color, bool Press){
+Button::Button(SDL_Color &textColor, SDL_Color &Color){
+    is_hovering = false;
     setColor(color);
     setTextColor(textColor);
-    is_pressable = Press;
     rect = {0, 0, 100, 50};
 }
 
@@ -52,15 +67,24 @@ void Button::setTextColor(SDL_Color color){
 }
 
 void Button::render(){
-    SDL_SetRenderDrawColor(Simple::renderer, color.r, color.g, color.b, color.a);
-    mrect = rect;
+
+    if(is_hovering){
+        SDL_Color tcl = hover();
+        SDL_SetRenderDrawColor(Simple::renderer, tcl.r, tcl.g, tcl.b, tcl.a);
+    }
+    else SDL_SetRenderDrawColor(Simple::renderer, color.r, color.g, color.b, color.a);
+    SDL_Rect mrect = rect;
     mrect.w += 10;
     mrect.x -= 5;
     SDL_RenderFillRect(Simple::renderer, &mrect);
 
-    SDL_Surface* temp = TTF_RenderUTF8_Blended(Simple::font, text.c_str(), textColor);
-    SDL_Texture* textImage = SDL_CreateTextureFromSurface(Simple::renderer, temp);
+    temp = TTF_RenderUTF8_Blended(Simple::font, text.c_str(), textColor);
+    textImage = SDL_CreateTextureFromSurface(Simple::renderer, temp);
     SDL_RenderCopy(Simple::renderer, textImage, NULL, &rect);
+    is_hovering = false;
+}
+
+void Button::clear(){
     SDL_FreeSurface(temp);
     SDL_DestroyTexture(textImage);
 }

@@ -29,15 +29,17 @@ class Button : public Simple_GUI{
     string text;
     SDL_Color color;
     SDL_Rect rect;
-    SDL_Rect mrect;
-    bool checkHover(SDL_Rect &rect);
+    
+    SDL_Color hover();
+
+    SDL_Surface* temp;
+    SDL_Texture* textImage;
 
     public:
-
-    bool is_pressable;
+    bool is_hovering;
 
     Button();
-    Button(SDL_Color &textColor, SDL_Color &Color, bool Press);
+    Button(SDL_Color &textColor, SDL_Color &Color);
 
     void setRect(int x, int y, int w, int h);
     void setRect(SDL_Rect &rect);
@@ -45,6 +47,14 @@ class Button : public Simple_GUI{
     void setColor(SDL_Color color);
     void setTextColor(SDL_Color color);
     void render();
+    void clear();
+};
+
+class Grid{
+    private:
+
+    public:
+    
 };
 
 #endif
